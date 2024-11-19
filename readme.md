@@ -8,6 +8,8 @@ This lab modifies the completed Products example to use a sup abase database.
 
 ![Supabase](assets/webApp_Supabase.png)
 
+[Supabase Python Documentation](https://supabase.com/docs/reference/python/introduction)
+
 ### Getting started
 
 **Start by cloning this repository and opening in VS Code.**
