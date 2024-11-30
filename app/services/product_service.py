@@ -1,4 +1,4 @@
-from app.data_access.product_dba import dataGetProducts, dataGetProduct, dataAddProduct, dataUpdateProduct, dataDeleteProduct
+from app.data_access.product_supabase import dataGetProducts, dataGetProduct,dataGetCategories,dataAddProduct,dataUpdateProduct,dataDeleteProduct
 from app.models.product import Product
 import json
 
@@ -10,27 +10,17 @@ def getAllProducts() :
 def getProduct(id) :
     return dataGetProduct(id)
 
-# add new todo using data access
-def newProduct(title: str, description: str, thumbnail: str, stock: int, price: float) :
-    # add product (via dataaccess)
-    print('price: ', price)
-    input = Product(title=title, description=description, thumbnail=thumbnail, stock=stock, price=price)
+def getAllCategories():
+    categories=dataGetCategories()
+    return categories
 
-    new_product = dataAddProduct(input)
+def addNewProduct(product:Product):
+    newProduct=dataAddProduct(product)
+    return newProduct
 
-    # return new product
-    return new_product
+def updateProduct(product:Product,id:int):
+    updatedProduct=dataUpdateProduct(product,id)
+    return updatedProduct
 
-# add new todo using data access
-def updateProduct(id: int, title: str, description: str, thumbnail: str, stock: int, price: float) :
-    # update product
-    input = Product(id = id, title=title, description=description, thumbnail=thumbnail, stock=stock, price=price)
-
-    product = dataUpdateProduct(input)
-
-    # return updated product
-    return product
-
-
-def deleteProduct(id : int) :
-    result = dataDeleteProduct(id)
+def deleteProduct(id:int):
+    dataDeleteProduct(id)

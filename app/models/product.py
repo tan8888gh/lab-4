@@ -5,13 +5,10 @@ from pydantic import BaseModel
 from typing import Optional
 
 class Product(BaseModel):
-    id: Optional[int] = 0 # default for new product
+    _id: int
+    category_id: int
     title: str
     description: str
-    category: Optional[str] = ""
     price: float
-    rating: Optional[int] = 0
     stock: int
-    brand: Optional[str] = ""
-    sku: Optional[str] = ""
-    thumbnail: Optional[str] = ""
+    thumbnail: str=""

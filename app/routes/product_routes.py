@@ -4,7 +4,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 # import service functions
-from app.services.product_service import getAllProducts, getProduct, newProduct, updateProduct, deleteProduct
+from app.services.product_service import getAllProducts, getProduct,getAllCategories,addNewProduct,updateProduct,deleteProduct
 
 from app.models.product import Product
 
@@ -19,26 +19,26 @@ templates = Jinja2Templates(directory="app/view_templates")
 async def getProducts(request: Request):
 
     products = getAllProducts()
-
+    categories=getAllCategories()
     # note passing of parameters to the page
-    return templates.TemplateResponse("product/products.html", {"request": request, "products": products })
+    return templates.TemplateResponse("product/products.html", {"request": request, "products": products,"categories":categories})
 
 @router.get("/update/{id}", response_class=HTMLResponse)
-async def getProfuctUpdateForm(request: Request, id: int):
+async def getProductUpdateForm(request: Request, id: int):
 
     # note passing of parameters to the page
     return templates.TemplateResponse("product/partials/product_update_form.html", {"request": request, "product": getProduct(id) })
 
-@router.put("/")
-def putProduct(request: Request, id: Annotated[int, Form()], title: Annotated[str, Form()], description: Annotated[str, Form()], thumbnail: Annotated[str, Form()], stock: Annotated[int, Form()], price: Annotated[float, Form()]) :
-    # get item value from the form POST data
-    update_product = updateProduct(id, title, description, thumbnail, stock, price)
+@router.put("/{id}", response_class=HTMLResponse)
+async def putProduct(request: Request, product:Annotated[Product,Form()],id:int):
+    update_product = updateProduct(product,id)
     return templates.TemplateResponse("product/partials/product_tr.html", {"request": request, "product": update_product})
 
+
+
 @router.post("/")
-def postProduct(request: Request, title: Annotated[str, Form()], description: Annotated[str, Form()], thumbnail: Annotated[str, Form()], stock: Annotated[int, Form()], price: Annotated[float, Form()]) :
-    # get item value from the form POST data
-    new_product = newProduct(title, description, thumbnail, stock, price)
+def postProduct(request: Request, product: Annotated[Product, Form()]) :
+    new_product =addNewProduct(product)
     return templates.TemplateResponse("product/partials/product_tr.html", {"request": request, "product": new_product})
 
 # https://fastapi.tiangolo.com/tutorial/request-form-models/#pydantic-models-for-forms
